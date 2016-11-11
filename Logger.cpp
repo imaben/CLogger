@@ -9,11 +9,14 @@ static char *szLogDesc[] = {
 };
 
 #define WRITE_LOG(level, fmt) do { \
-	CString strTemp; \
-	va_list args; \
-	va_start(args, fmt); \
-	strTemp.FormatV(fmt, args); \
-	WriteLog(FormatLog(level, strTemp)); \
+	if (m_nLogLevel <= level) \
+	{ \
+		CString strTemp; \
+		va_list args; \
+		va_start(args, fmt); \
+		strTemp.FormatV(fmt, args); \
+		WriteLog(FormatLog(level, strTemp)); \
+	} \
 } while (0);
 
 CLogger::CLogger()
@@ -63,32 +66,20 @@ CString CLogger::FormatLog(enum LogLevel eLevel, CString strLog)
 
 void CLogger::Debug(LPCTSTR pstrFormat, ...)
 {
-	if (m_nLogLevel <= LOG_LEVEL_DEBUG)
-	{
-		WRITE_LOG(LOG_LEVEL_DEBUG, pstrFormat);
-	}
+	WRITE_LOG(LOG_LEVEL_DEBUG, pstrFormat);
 }
 
 void CLogger::Info(LPCTSTR pstrFormat, ...)
 {
-	if (m_nLogLevel <= LOG_LEVEL_INFO)
-	{
-		WRITE_LOG(LOG_LEVEL_INFO, pstrFormat);
-	}
+	WRITE_LOG(LOG_LEVEL_INFO, pstrFormat);
 }
 
 void CLogger::Warn(LPCTSTR pstrFormat, ...)
 {
-	if (m_nLogLevel <= LOG_LEVEL_WARN)
-	{
-		WRITE_LOG(LOG_LEVEL_WARN, pstrFormat);
-	}
+	WRITE_LOG(LOG_LEVEL_WARN, pstrFormat);
 }
 
 void CLogger::Error(LPCTSTR pstrFormat, ...)
 {
-	if (m_nLogLevel <= LOG_LEVEL_ERROR)
-	{
-		WRITE_LOG(LOG_LEVEL_ERROR, pstrFormat);
-	}
+	WRITE_LOG(LOG_LEVEL_ERROR, pstrFormat);
 }
